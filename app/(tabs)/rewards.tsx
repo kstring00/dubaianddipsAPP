@@ -17,8 +17,7 @@ export default function RewardsScreen() {
     <SafeAreaView style={styles.safe}>
       <View style={styles.container}>
         <Text style={styles.eyebrow}>BOARDING CLUB</Text>
-        <Text style={styles.title}>A sweeter{'
-'}tomorrow.</Text>
+        <Text style={styles.title}>A sweeter{'\n'}tomorrow.</Text>
         <Text style={styles.body}>
           This screen is ready for Toast Loyalty. Until that channel is activated,
           preview builds show sample points and production builds show a launch
