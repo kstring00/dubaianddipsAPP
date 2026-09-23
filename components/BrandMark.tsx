@@ -80,7 +80,6 @@ const styles = StyleSheet.create({
     top: 16,
     fontSize: 10,
   },
-  compactD2: {},
   wordmark: {
     color: colors.ink,
     fontSize: 9,
