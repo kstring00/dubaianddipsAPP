@@ -1,12 +1,13 @@
 import { Tabs } from 'expo-router';
 import { Platform, StyleSheet, Text, View } from 'react-native';
-import { colors } from '@/constants/theme';
+
+import { colors, fonts } from '@/constants/theme';
 
 const icons: Record<string, string> = {
   index: '⌂',
-  order: '▱',
-  rewards: '♢',
-  account: '○',
+  order: '✈',
+  rewards: '✦',
+  account: 'D',
 };
 
 export default function TabsLayout() {
@@ -14,8 +15,8 @@ export default function TabsLayout() {
     <Tabs
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarActiveTintColor: colors.pine,
-        tabBarInactiveTintColor: '#7B756C',
+        tabBarActiveTintColor: colors.courtyard,
+        tabBarInactiveTintColor: '#81736B',
         tabBarShowLabel: true,
         tabBarIcon: ({ color, focused }) => (
           <View style={[styles.iconWrap, focused && styles.iconWrapActive]}>
@@ -23,18 +24,20 @@ export default function TabsLayout() {
           </View>
         ),
         tabBarLabelStyle: {
-          fontSize: 10,
+          fontFamily: fonts.narrow,
+          fontSize: 9,
           fontWeight: '700',
+          letterSpacing: 0.4,
           marginTop: -3,
           marginBottom: Platform.OS === 'ios' ? -3 : 6,
         },
         tabBarStyle: {
-          backgroundColor: 'rgba(255,253,248,0.98)',
+          backgroundColor: colors.offWhite,
           borderTopWidth: StyleSheet.hairlineWidth,
-          borderTopColor: colors.line,
+          borderTopColor: '#D4C7B8',
           height: Platform.OS === 'ios' ? 82 : 70,
           paddingTop: 7,
-          shadowColor: '#2F241D',
+          shadowColor: colors.bark,
           shadowOpacity: 0.08,
           shadowRadius: 14,
           shadowOffset: { width: 0, height: -5 },
@@ -59,11 +62,11 @@ const styles = StyleSheet.create({
     borderRadius: 14,
   },
   iconWrapActive: {
-    backgroundColor: 'rgba(32,63,44,0.10)',
+    backgroundColor: colors.mintCondition,
   },
   icon: {
-    fontSize: 22,
-    lineHeight: 24,
+    fontSize: 18,
+    lineHeight: 21,
     fontWeight: '700',
   },
 });
