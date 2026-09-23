@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "Dubai & Dips",
+    "slug": "dubaianddips",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "dubaianddips",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.dubaianddips.app"
+    },
+    "android": {
+      "package": "com.dubaianddips.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#F4EFE5"
+      },
+      "edgeToEdgeEnabled": true
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
