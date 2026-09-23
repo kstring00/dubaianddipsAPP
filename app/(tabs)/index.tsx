@@ -49,9 +49,7 @@ export default function HomeScreen() {
           <View style={styles.topbar}>
             <BrandMark />
             <View style={styles.heroRight}>
-              <Text style={styles.microcopy}>SWEET{'
-'}DESTINATIONS{'
-'}AHEAD</Text>
+              <Text style={styles.microcopy}>SWEET{'\n'}DESTINATIONS{'\n'}AHEAD</Text>
               <Pressable
                 style={styles.bell}
                 onPress={() => Haptics.selectionAsync()}
@@ -68,8 +66,7 @@ export default function HomeScreen() {
           </View>
 
           <View style={styles.heroDecor}>
-            <Text style={styles.heroScript}>More than{'
-'}desserts</Text>
+            <Text style={styles.heroScript}>More than{'\n'}desserts</Text>
             <Text style={styles.heroStar}>✦</Text>
           </View>
         </View>
@@ -119,9 +116,7 @@ export default function HomeScreen() {
 
           <View style={styles.featureCopy}>
             <Text style={styles.featureEyebrow}>FEATURED DESTINATION</Text>
-            <Text style={styles.featureTitle}>Dubai{'
-'}Chocolate{'
-'}Frappe</Text>
+            <Text style={styles.featureTitle}>Dubai{'\n'}Chocolate{'\n'}Frappe</Text>
             <Text style={styles.featureBody}>Chocolate, pistachio and cream.</Text>
 
             <Pressable
