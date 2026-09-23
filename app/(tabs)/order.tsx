@@ -35,8 +35,7 @@ export default function OrderScreen() {
             <BrandMark compact />
             <Text style={styles.eyebrow}>DEPARTURES</Text>
           </View>
-          <Text style={styles.title}>Everything on{'
-'}the boards.</Text>
+          <Text style={styles.title}>Everything on{'\n'}the boards.</Text>
           <Text style={styles.subtitle}>
             Pick a destination now. When Toast ordering goes live, these same
             paths will hand off to Toast for modifiers, cart, payment and pickup.
