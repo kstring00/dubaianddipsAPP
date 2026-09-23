@@ -53,9 +53,7 @@ export default function HomeScreen() {
           <View style={styles.topbar}>
             <BrandMark />
             <View style={styles.heroRight}>
-              <Text style={styles.microcopy}>SWEET{'
-'}DESTINATIONS{'
-'}AHEAD</Text>
+              <Text style={styles.microcopy}>SWEET{'\n'}DESTINATIONS{'\n'}AHEAD</Text>
               <Pressable
                 style={styles.bell}
                 onPress={() => Haptics.selectionAsync()}
@@ -84,9 +82,7 @@ export default function HomeScreen() {
               <Text style={styles.greeting}>{greeting}, Kyle</Text>
               <Text style={styles.tagline}>DESSERTS BRING US FURTHER ✦</Text>
             </View>
-            <Text style={styles.script}>More{'
-'}than{'
-'}desserts</Text>
+            <Text style={styles.script}>More{'\n'}than{'\n'}desserts</Text>
           </View>
         </View>
 
@@ -109,8 +105,7 @@ export default function HomeScreen() {
           />
           <View style={styles.rewardsTop}>
             <Text style={styles.rewardsEyebrow}>BOARDING CLUB</Text>
-            <Text style={styles.rewardsSmall}>A SWEETER{'
-'}TOMORROW</Text>
+            <Text style={styles.rewardsSmall}>A SWEETER{'\n'}TOMORROW</Text>
           </View>
 
           <View style={styles.rewardsMain}>
@@ -139,11 +134,8 @@ export default function HomeScreen() {
           />
           <View style={styles.featureCopy}>
             <Text style={styles.featureEyebrow}>FEATURED DESTINATION</Text>
-            <Text style={styles.featureTitle}>Dubai{'
-'}Chocolate{'
-'}Frappe</Text>
-            <Text style={styles.featureBody}>A taste of Dubai in{'
-'}every sip.</Text>
+            <Text style={styles.featureTitle}>Dubai{'\n'}Chocolate{'\n'}Frappe</Text>
+            <Text style={styles.featureBody}>A taste of Dubai in{'\n'}every sip.</Text>
 
             <Pressable
               style={({ pressed }) => [
@@ -162,10 +154,7 @@ export default function HomeScreen() {
           </View>
 
           <View style={styles.featureStamp}>
-            <Text style={styles.featureStampText}>SWEET{'
-'}PLACES{'
-'}BRING GOOD{'
-'}PEOPLE</Text>
+            <Text style={styles.featureStampText}>SWEET{'\n'}PLACES{'\n'}BRING GOOD{'\n'}PEOPLE</Text>
             <Text style={styles.featureStampStar}>✦</Text>
           </View>
         </View>
