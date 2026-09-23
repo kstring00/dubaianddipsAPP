@@ -33,12 +33,19 @@ export function DepartureBoardPanel({ onSelect }: DepartureBoardPanelProps) {
       </View>
 
       <View style={styles.columns}>
-        {['DEST', 'BOARD', 'GATE', 'STATUS'].map((column) => (
+        {(
+          [
+            ['DEST', styles.cellNarrow],
+            ['BOARD', styles.cellWide],
+            ['GATE', styles.cellNarrow],
+            ['STATUS', styles.cell],
+          ] as const
+        ).map(([column, cellStyle]) => (
           <AppText
             key={column}
             variant="ticketLabel"
             color={BOARD_DIM}
-            style={[styles.cell, column === 'BOARD' && styles.cellWide]}
+            style={cellStyle}
           >
             {column}
           </AppText>
@@ -55,11 +62,11 @@ export function DepartureBoardPanel({ onSelect }: DepartureBoardPanelProps) {
           accessibilityHint="Opens this part of the menu"
         >
           <View style={[styles.row, index > 0 && styles.rowBorder]}>
-            <AppText style={[styles.mono, styles.cell]}>{departure.code}</AppText>
-            <AppText style={[styles.mono, styles.cell, styles.cellWide]} numberOfLines={1}>
+            <AppText style={[styles.mono, styles.cellNarrow]}>{departure.code}</AppText>
+            <AppText style={[styles.mono, styles.cellWide]} numberOfLines={1}>
               {departure.label.toUpperCase()}
             </AppText>
-            <AppText style={[styles.mono, styles.cell]}>{departure.gate}</AppText>
+            <AppText style={[styles.mono, styles.cellNarrow]}>{departure.gate}</AppText>
             <View style={[styles.cell, styles.statusCell]}>
               <View
                 style={[
@@ -120,10 +127,13 @@ const styles = StyleSheet.create({
     borderTopColor: 'rgba(237,228,212,0.14)',
   },
   cell: {
-    flex: 1,
+    flex: 1.1,
+  },
+  cellNarrow: {
+    flex: 0.8,
   },
   cellWide: {
-    flex: 1.6,
+    flex: 1.4,
   },
   mono: {
     fontFamily: fonts.mono,

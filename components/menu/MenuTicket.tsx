@@ -26,6 +26,7 @@ export function MenuTicket({ item, onPress }: MenuTicketProps) {
         <View style={styles.passWrap}>
           <BoardingPass
             size="sm"
+            fluid
             code={item.code}
             destination={item.destination}
             flight={item.flight}
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   passWrap: {
-    transform: [{ scale: 0.98 }],
+    width: '100%',
   },
   copy: {
     width: '100%',

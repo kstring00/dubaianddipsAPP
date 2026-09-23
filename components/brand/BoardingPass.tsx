@@ -14,6 +14,8 @@ export type BoardingPassProps = {
   seat?: string;
   accent?: string;
   size?: 'sm' | 'md';
+  /** Fill the parent's width instead of the fixed tag width. */
+  fluid?: boolean;
 };
 
 const INK = '#1C1917';
@@ -31,13 +33,14 @@ export function BoardingPass({
   seat = '2D',
   accent = colors.sugar,
   size = 'md',
+  fluid = false,
 }: BoardingPassProps) {
   const sm = size === 'sm';
   const seed = `${code}-${destination}-${flight}`;
 
   return (
     <View
-      style={[styles.card, sm ? styles.cardSm : styles.cardMd]}
+      style={[styles.card, sm ? styles.cardSm : styles.cardMd, fluid && styles.cardFluid]}
       accessibilityRole="image"
       accessibilityLabel={`Boarding pass to ${destination}, flight ${flight}, gate ${gate}, seat ${seat}`}
     >
@@ -54,7 +57,14 @@ export function BoardingPass({
             {code}
           </AppText>
         </View>
-        <AppText variant="ticketLabel" color={INK}>
+        <AppText
+          variant="ticketLabel"
+          color={INK}
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          minimumFontScale={0.7}
+          style={sm ? styles.labelSm : undefined}
+        >
           D&amp;D AIRLINES
         </AppText>
       </View>
@@ -75,14 +85,22 @@ export function BoardingPass({
             ['GATE', gate],
             ['SEAT', seat],
           ] as const
-        ).map(([label, value]) => (
-          <View key={label}>
-            <AppText variant="ticketLabel" color="#78716C">
+        ).map(([label, value], index) => (
+          <View key={label} style={index === 2 ? styles.dataCellLast : styles.dataCell}>
+            <AppText
+              variant="ticketLabel"
+              color="#78716C"
+              numberOfLines={1}
+              style={sm ? styles.labelSm : undefined}
+            >
               {label}
             </AppText>
             <AppText
               variant="ticketValue"
               color={INK}
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={0.7}
               style={sm ? styles.valueSm : undefined}
             >
               {value}
@@ -121,7 +139,10 @@ const styles = StyleSheet.create({
   cardSm: {
     width: 142,
     paddingVertical: space.sm + 2,
-    paddingHorizontal: space.lg,
+    paddingHorizontal: space.md + 2,
+  },
+  cardFluid: {
+    width: '100%',
   },
   rail: {
     position: 'absolute',
@@ -160,11 +181,23 @@ const styles = StyleSheet.create({
   dataRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: space.sm,
+    gap: space.xs,
+  },
+  dataCell: {
+    flexShrink: 1,
+  },
+  dataCellLast: {
+    flexShrink: 0,
+    alignItems: 'flex-end',
+  },
+  labelSm: {
+    fontSize: 7,
+    letterSpacing: 0.5,
   },
   valueSm: {
     fontSize: 10,
     lineHeight: 14,
+    letterSpacing: 0.2,
   },
   footerRow: {
     flexDirection: 'row',
