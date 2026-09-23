@@ -6,19 +6,22 @@ import {
   Text,
   View,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import * as Haptics from 'expo-haptics';
+import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { BrandMark } from '@/components/BrandMark';
 import { DrinkArtwork } from '@/components/DrinkArtwork';
-import { colors, radius } from '@/constants/theme';
-import { openToast, toastLinks } from '@/lib/toast';
+import { departures } from '@/constants/menu';
+import { colors, radius, shadow } from '@/constants/theme';
+import { hasToastLink, openToast, previewMode, toastLinks } from '@/lib/toast';
 
-const departures = [
-  { code: 'DXB', label: 'Frappes', key: 'frappes' as const },
-  { code: 'NRT', label: 'Matcha', key: 'matcha' as const },
-  { code: 'FCO', label: 'Coffee', key: 'coffee' as const },
-];
+const skyline = [28, 42, 30, 66, 34, 112, 48, 76, 39, 58, 32, 45];
 
 export default function HomeScreen() {
+  const router = useRouter();
+
   const greeting = useMemo(() => {
     const hour = new Date().getHours();
     if (hour < 12) return 'Good morning';
@@ -26,106 +29,228 @@ export default function HomeScreen() {
     return 'Good evening';
   }, []);
 
+  const order = async (url?: string) => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    if (hasToastLink(url) || hasToastLink(toastLinks.order)) {
+      await openToast(url);
+      return;
+    }
+    router.push('/order');
+  };
+
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
       <ScrollView
-        style={styles.scroll}
-        contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.content}
       >
-        <View style={styles.topbar}>
-          <BrandMark />
-          <Pressable style={styles.bell} accessibilityLabel="Notifications">
-            <Text style={styles.bellText}>✦</Text>
-          </Pressable>
-        </View>
+        <View style={styles.hero}>
+          <LinearGradient
+            colors={['#FFFDF8', '#F6EEDD', '#F5F0E6']}
+            style={StyleSheet.absoluteFill}
+          />
 
-        <View style={styles.intro}>
-          <Text style={styles.greeting}>{greeting}</Text>
-          <Text style={styles.subtitle}>Sweet destinations ahead.</Text>
+          <View style={styles.topbar}>
+            <BrandMark />
+            <View style={styles.heroRight}>
+              <Text style={styles.microcopy}>SWEET{'
+'}DESTINATIONS{'
+'}AHEAD</Text>
+              <Pressable
+                style={styles.bell}
+                onPress={() => Haptics.selectionAsync()}
+                accessibilityLabel="Notifications"
+              >
+                <Text style={styles.bellIcon}>♢</Text>
+              </Pressable>
+            </View>
+          </View>
+
+          <View style={styles.city}>
+            {skyline.map((height, index) => (
+              <View
+                key={index}
+                style={[
+                  styles.building,
+                  { height, opacity: index === 5 ? 0.42 : 0.20 },
+                  index === 5 && styles.burj,
+                ]}
+              />
+            ))}
+          </View>
+
+          <View style={styles.greetingRow}>
+            <View>
+              <Text style={styles.greeting}>{greeting}, Kyle</Text>
+              <Text style={styles.tagline}>DESSERTS BRING US FURTHER ✦</Text>
+            </View>
+            <Text style={styles.script}>More{'
+'}than{'
+'}desserts</Text>
+          </View>
         </View>
 
         <Pressable
-          onPress={() => openToast(toastLinks.rewards || toastLinks.order)}
+          onPress={() =>
+            previewMode
+              ? router.push('/rewards')
+              : openToast(toastLinks.rewards || toastLinks.order)
+          }
           style={({ pressed }) => [
-            styles.clubCard,
+            styles.rewardsCard,
             pressed && styles.pressed,
           ]}
         >
-          <View>
-            <Text style={styles.eyebrowLight}>Boarding Club</Text>
-            <Text style={styles.clubTitle}>Your rewards, ready to travel.</Text>
-            <Text style={styles.clubLink}>View Toast rewards  →</Text>
+          <LinearGradient
+            colors={[colors.pineSoft, colors.pineDark]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={StyleSheet.absoluteFill}
+          />
+          <View style={styles.rewardsTop}>
+            <Text style={styles.rewardsEyebrow}>BOARDING CLUB</Text>
+            <Text style={styles.rewardsSmall}>A SWEETER{'
+'}TOMORROW</Text>
           </View>
-          <View style={styles.clubSeal}>
-            <Text style={styles.clubSealStar}>✦</Text>
+
+          <View style={styles.rewardsMain}>
+            <Text style={styles.plane}>✈</Text>
+            <View style={styles.pointsBlock}>
+              <Text style={styles.points}>
+                {previewMode ? '420 points' : 'Boarding Club'}
+              </Text>
+              <View style={styles.progressTrack}>
+                <View style={[styles.progressFill, { width: previewMode ? '72%' : '28%' }]} />
+              </View>
+              <Text style={styles.progressText}>
+                {previewMode ? '80 points until your next reward' : 'Rewards launching soon'}
+              </Text>
+            </View>
+            <Text style={styles.cardChevron}>›</Text>
           </View>
         </Pressable>
 
-        <View style={styles.sectionHeading}>
-          <View>
-            <Text style={styles.eyebrow}>Featured destination</Text>
-            <Text style={styles.sectionTitle}>Dubai Chocolate Frappe</Text>
-          </View>
-          <Text style={styles.route}>DXB</Text>
-        </View>
-
         <View style={styles.featureCard}>
-          <DrinkArtwork />
+          <LinearGradient
+            colors={['#E9D9BD', '#F4E7D1', '#DCC5A5']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={StyleSheet.absoluteFill}
+          />
           <View style={styles.featureCopy}>
-            <Text style={styles.featureDescription}>
-              Chocolate, pistachio and a chilled frappe built for the first sip.
-            </Text>
+            <Text style={styles.featureEyebrow}>FEATURED DESTINATION</Text>
+            <Text style={styles.featureTitle}>Dubai{'
+'}Chocolate{'
+'}Frappe</Text>
+            <Text style={styles.featureBody}>A taste of Dubai in{'
+'}every sip.</Text>
+
             <Pressable
-              onPress={() => openToast(toastLinks.featured || toastLinks.order)}
               style={({ pressed }) => [
-                styles.primaryButton,
-                pressed && styles.primaryPressed,
+                styles.startButton,
+                pressed && styles.startButtonPressed,
               ]}
+              onPress={() => order(toastLinks.featured)}
             >
-              <Text style={styles.primaryButtonText}>Start order</Text>
-              <Text style={styles.primaryArrow}>→</Text>
+              <Text style={styles.startButtonText}>Start order</Text>
+              <Text style={styles.startArrow}>→</Text>
             </Pressable>
           </View>
-        </View>
 
-        <View style={[styles.sectionHeading, styles.departureHeading]}>
-          <View>
-            <Text style={styles.eyebrow}>Departures</Text>
-            <Text style={styles.sectionTitle}>Pick your next stop.</Text>
+          <View style={styles.drinkWrap}>
+            <DrinkArtwork />
           </View>
-          <Text style={styles.live}>Now boarding</Text>
+
+          <View style={styles.featureStamp}>
+            <Text style={styles.featureStampText}>SWEET{'
+'}PLACES{'
+'}BRING GOOD{'
+'}PEOPLE</Text>
+            <Text style={styles.featureStampStar}>✦</Text>
+          </View>
         </View>
 
-        <View style={styles.board}>
-          {departures.map((departure, index) => (
+        <View style={styles.carouselDots}>
+          <View style={[styles.dot, styles.dotActive]} />
+          <View style={styles.dot} />
+          <View style={styles.dot} />
+          <View style={styles.dot} />
+        </View>
+
+        <View style={styles.sectionHeader}>
+          <View style={styles.sectionTitleRow}>
+            <Text style={styles.sectionPlane}>✈</Text>
+            <Text style={styles.sectionTitle}>Departures</Text>
+          </View>
+          <Pressable onPress={() => router.push('/order')}>
+            <Text style={styles.explore}>EXPLORE THE MENU →</Text>
+          </Pressable>
+        </View>
+
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.departuresRow}
+        >
+          {departures.map((item, index) => (
             <Pressable
-              key={departure.code}
-              onPress={() =>
-                openToast(toastLinks[departure.key] || toastLinks.order)
-              }
+              key={item.code}
+              onPress={() => router.push('/order')}
               style={({ pressed }) => [
-                styles.boardRow,
-                index !== departures.length - 1 && styles.boardDivider,
-                pressed && styles.boardRowPressed,
+                styles.destinationCard,
+                pressed && styles.destinationPressed,
               ]}
             >
-              <View style={styles.codeBadge}>
-                <Text style={styles.code}>{departure.code}</Text>
+              <View style={[styles.destinationArt, { backgroundColor: item.accent }]}>
+                {index === 0 ? (
+                  <DrinkArtwork small />
+                ) : (
+                  <>
+                    <View style={styles.artCircle} />
+                    <View style={styles.artCup} />
+                    <View style={styles.artFoam} />
+                  </>
+                )}
               </View>
-              <Text style={styles.boardLabel}>{departure.label}</Text>
-              <Text style={styles.gate}>Gate A{index + 1}</Text>
-              <Text style={styles.chevron}>›</Text>
+              <View style={styles.destinationBottom}>
+                <Text style={styles.destinationCode}>{item.code} ·</Text>
+                <Text style={styles.destinationLabel}>{item.label}</Text>
+                <Text style={styles.destinationArrow}>›</Text>
+              </View>
             </Pressable>
           ))}
+        </ScrollView>
+
+        <View style={styles.sectionHeader}>
+          <View style={styles.sectionTitleRow}>
+            <Text style={styles.sectionPlane}>↻</Text>
+            <Text style={styles.sectionTitle}>Order again</Text>
+          </View>
+          <Text style={styles.explore}>VIEW ALL →</Text>
         </View>
 
-        <View style={styles.promise}>
-          <Text style={styles.promiseStar}>✦</Text>
-          <Text style={styles.promiseText}>
-            Order in the app. Toast handles modifiers, cart, payment and pickup.
-          </Text>
-        </View>
+        <Pressable
+          onPress={() => order(toastLinks.featured)}
+          style={({ pressed }) => [
+            styles.orderAgain,
+            pressed && styles.pressed,
+          ]}
+        >
+          <View style={styles.orderThumb}>
+            <DrinkArtwork small />
+          </View>
+          <View style={styles.orderCopy}>
+            <Text style={styles.orderTitle}>Dubai Chocolate Frappe</Text>
+            <Text style={styles.orderMeta}>Grande · Extra Pistachio</Text>
+          </View>
+          <Text style={styles.orderChevron}>›</Text>
+        </Pressable>
+
+        <Text style={styles.previewNote}>
+          {previewMode
+            ? 'Preview mode · Toast ordering and loyalty connect when the restaurant activates them.'
+            : 'Order and rewards powered by Toast.'}
+        </Text>
       </ScrollView>
     </SafeAreaView>
   );
@@ -136,261 +261,419 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.cream,
   },
-  scroll: {
-    flex: 1,
-  },
   content: {
-    paddingHorizontal: 20,
+    paddingBottom: 32,
+  },
+  hero: {
+    minHeight: 285,
+    overflow: 'hidden',
+    paddingHorizontal: 22,
     paddingTop: 8,
-    paddingBottom: 34,
+    paddingBottom: 26,
   },
   topbar: {
+    zIndex: 4,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-start',
+  },
+  heroRight: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 17,
+  },
+  microcopy: {
+    color: colors.ink,
+    fontSize: 8,
+    lineHeight: 11,
+    letterSpacing: 2.3,
+    fontWeight: '700',
+    textAlign: 'center',
   },
   bell: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     borderWidth: 1,
-    borderColor: colors.line,
-    backgroundColor: colors.paper,
+    borderColor: 'rgba(47,36,29,0.20)',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'rgba(255,255,255,0.45)',
   },
-  bellText: {
-    color: colors.gold,
-    fontSize: 18,
+  bellIcon: {
+    color: colors.ink,
+    fontSize: 21,
   },
-  intro: {
-    marginTop: 26,
-    marginBottom: 22,
+  city: {
+    position: 'absolute',
+    right: 26,
+    bottom: 14,
+    height: 130,
+    width: 250,
+    flexDirection: 'row',
+    gap: 4,
+    alignItems: 'flex-end',
+  },
+  building: {
+    width: 12,
+    backgroundColor: colors.gold,
+    borderTopLeftRadius: 3,
+    borderTopRightRadius: 3,
+  },
+  burj: {
+    width: 9,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  greetingRow: {
+    marginTop: 54,
+    zIndex: 4,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
   },
   greeting: {
     color: colors.ink,
-    fontSize: 34,
+    fontFamily: 'Georgia',
+    fontSize: 31,
     lineHeight: 38,
-    fontWeight: '500',
-    letterSpacing: -1.2,
+    letterSpacing: -0.7,
   },
-  subtitle: {
-    color: colors.muted,
+  tagline: {
+    marginTop: 8,
+    color: colors.ink,
+    fontSize: 9,
+    letterSpacing: 2.5,
+    fontWeight: '700',
+  },
+  script: {
+    color: colors.gold,
+    fontFamily: 'Georgia',
+    fontStyle: 'italic',
     fontSize: 16,
+    lineHeight: 18,
+    textAlign: 'center',
+    transform: [{ rotate: '-8deg' }],
+    marginRight: 8,
+  },
+  rewardsCard: {
+    marginHorizontal: 20,
+    marginTop: -12,
+    minHeight: 148,
+    borderRadius: radius.lg,
+    padding: 20,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(216,199,155,0.38)',
+    ...shadow.card,
+  },
+  pressed: {
+    opacity: 0.94,
+    transform: [{ scale: 0.99 }],
+  },
+  rewardsTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  rewardsEyebrow: {
+    color: colors.goldSoft,
+    fontSize: 10,
+    letterSpacing: 3.2,
+    fontWeight: '800',
+  },
+  rewardsSmall: {
+    color: colors.gold,
+    fontSize: 8,
+    lineHeight: 11,
+    letterSpacing: 2,
+    fontWeight: '800',
+    textAlign: 'right',
+  },
+  rewardsMain: {
+    marginTop: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  plane: {
+    color: colors.cream,
+    fontSize: 29,
+    marginRight: 14,
+  },
+  pointsBlock: {
+    flex: 1,
+  },
+  points: {
+    color: colors.cream,
+    fontFamily: 'Georgia',
+    fontSize: 26,
+    marginBottom: 9,
+  },
+  progressTrack: {
+    height: 7,
+    backgroundColor: 'rgba(245,240,230,0.16)',
+    borderWidth: 1,
+    borderColor: 'rgba(216,199,155,0.58)',
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  progressFill: {
+    height: '100%',
+    backgroundColor: colors.goldSoft,
+    borderRadius: 10,
+  },
+  progressText: {
+    color: 'rgba(245,240,230,0.78)',
+    fontSize: 11,
     marginTop: 5,
   },
-  clubCard: {
-    minHeight: 164,
-    backgroundColor: colors.pine,
+  cardChevron: {
+    color: colors.cream,
+    fontSize: 30,
+    marginLeft: 12,
+  },
+  featureCard: {
+    minHeight: 305,
+    marginHorizontal: 20,
+    marginTop: 18,
     borderRadius: radius.lg,
-    padding: 24,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#DAC9AE',
+    ...shadow.card,
+  },
+  featureCopy: {
+    width: '54%',
+    padding: 21,
+    zIndex: 5,
+  },
+  featureEyebrow: {
+    color: colors.ink,
+    fontSize: 8,
+    letterSpacing: 2,
+    fontWeight: '800',
+    marginBottom: 8,
+  },
+  featureTitle: {
+    color: colors.ink,
+    fontFamily: 'Georgia',
+    fontSize: 34,
+    lineHeight: 33,
+    letterSpacing: -0.9,
+  },
+  featureBody: {
+    color: colors.muted,
+    fontSize: 13,
+    lineHeight: 17,
+    marginTop: 12,
+  },
+  startButton: {
+    marginTop: 18,
+    width: 158,
+    height: 45,
+    borderRadius: radius.pill,
+    backgroundColor: colors.pine,
+    paddingHorizontal: 19,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    borderWidth: 1,
-    borderColor: 'rgba(216,201,157,0.62)',
-    shadowColor: '#14251D',
-    shadowOpacity: 0.18,
-    shadowRadius: 20,
-    shadowOffset: { width: 0, height: 10 },
-    elevation: 8,
   },
-  pressed: {
-    transform: [{ scale: 0.99 }],
-    opacity: 0.96,
+  startButtonPressed: {
+    backgroundColor: colors.pineSoft,
+    transform: [{ scale: 0.98 }],
   },
-  eyebrowLight: {
-    color: colors.goldSoft,
-    textTransform: 'uppercase',
-    fontSize: 11,
-    fontWeight: '800',
-    letterSpacing: 1.7,
-    marginBottom: 10,
-  },
-  clubTitle: {
+  startButtonText: {
     color: colors.cream,
-    fontSize: 21,
-    lineHeight: 27,
-    fontWeight: '600',
-    maxWidth: 220,
-  },
-  clubLink: {
-    color: colors.goldSoft,
-    fontSize: 13,
+    fontSize: 14,
     fontWeight: '700',
-    marginTop: 16,
   },
-  clubSeal: {
-    width: 66,
-    height: 66,
-    borderRadius: 33,
-    borderWidth: 1,
-    borderColor: colors.gold,
-    alignItems: 'center',
+  startArrow: {
+    color: colors.goldSoft,
+    fontSize: 20,
+  },
+  drinkWrap: {
+    position: 'absolute',
+    right: 7,
+    bottom: -4,
+  },
+  featureStamp: {
+    position: 'absolute',
+    right: 12,
+    bottom: 12,
+    padding: 7,
+    backgroundColor: 'rgba(53,43,34,0.78)',
+    borderRadius: 4,
+    zIndex: 7,
+  },
+  featureStampText: {
+    color: colors.goldSoft,
+    fontSize: 6,
+    lineHeight: 8,
+    letterSpacing: 1.4,
+    fontWeight: '800',
+  },
+  featureStampStar: {
+    color: colors.goldSoft,
+    fontSize: 9,
+    textAlign: 'center',
+    marginTop: 2,
+  },
+  carouselDots: {
+    marginTop: 10,
+    flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255,255,255,0.03)',
+    gap: 7,
   },
-  clubSealStar: {
-    color: colors.gold,
-    fontSize: 26,
+  dot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#CBC4B8',
   },
-  sectionHeading: {
-    marginTop: 34,
-    marginBottom: 15,
+  dotActive: {
+    backgroundColor: colors.pine,
+  },
+  sectionHeader: {
+    paddingHorizontal: 20,
+    marginTop: 22,
+    marginBottom: 12,
     flexDirection: 'row',
     alignItems: 'flex-end',
     justifyContent: 'space-between',
   },
-  departureHeading: {
-    marginTop: 36,
+  sectionTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
   },
-  eyebrow: {
-    color: colors.gold,
-    textTransform: 'uppercase',
-    fontSize: 10,
-    fontWeight: '800',
-    letterSpacing: 1.6,
-    marginBottom: 6,
+  sectionPlane: {
+    color: colors.ink,
+    fontSize: 22,
   },
   sectionTitle: {
     color: colors.ink,
-    fontSize: 23,
-    lineHeight: 28,
-    fontWeight: '600',
-    letterSpacing: -0.5,
+    fontFamily: 'Georgia',
+    fontSize: 25,
   },
-  route: {
-    color: colors.pine,
-    fontSize: 12,
-    fontWeight: '900',
-    letterSpacing: 2,
-    borderWidth: 1,
-    borderColor: colors.line,
-    borderRadius: radius.pill,
-    paddingHorizontal: 12,
-    paddingVertical: 7,
-    overflow: 'hidden',
-  },
-  featureCard: {
-    backgroundColor: colors.paper,
-    borderRadius: radius.lg,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: colors.line,
-  },
-  featureCopy: {
-    paddingHorizontal: 20,
-    paddingBottom: 20,
-  },
-  featureDescription: {
+  explore: {
     color: colors.muted,
-    fontSize: 14,
-    lineHeight: 21,
-    marginBottom: 18,
-  },
-  primaryButton: {
-    height: 56,
-    backgroundColor: colors.pine,
-    borderRadius: radius.pill,
-    paddingHorizontal: 22,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  primaryPressed: {
-    backgroundColor: colors.pineSoft,
-    transform: [{ scale: 0.99 }],
-  },
-  primaryButtonText: {
-    color: colors.cream,
-    fontSize: 15,
+    fontSize: 8,
     fontWeight: '800',
-    letterSpacing: 0.3,
+    letterSpacing: 1.8,
   },
-  primaryArrow: {
-    color: colors.goldSoft,
-    fontSize: 22,
+  departuresRow: {
+    paddingHorizontal: 20,
+    gap: 10,
   },
-  live: {
-    color: colors.pine,
-    fontSize: 10,
-    fontWeight: '900',
-    textTransform: 'uppercase',
-    letterSpacing: 1.2,
-  },
-  board: {
-    backgroundColor: '#1C211F',
-    borderRadius: radius.md,
+  destinationCard: {
+    width: 128,
+    borderRadius: 14,
+    backgroundColor: colors.paper,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: '#343A37',
+    borderColor: colors.line,
   },
-  boardRow: {
-    minHeight: 70,
-    paddingHorizontal: 14,
-    flexDirection: 'row',
-    alignItems: 'center',
+  destinationPressed: {
+    opacity: 0.90,
+    transform: [{ translateY: 1 }],
   },
-  boardRowPressed: {
-    backgroundColor: '#262D29',
-  },
-  boardDivider: {
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#3A403D',
-  },
-  codeBadge: {
-    width: 56,
-    height: 38,
-    borderRadius: 8,
+  destinationArt: {
+    height: 92,
+    overflow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#111513',
+  },
+  artCircle: {
+    position: 'absolute',
+    width: 74,
+    height: 74,
+    borderRadius: 37,
+    backgroundColor: 'rgba(255,255,255,0.18)',
+  },
+  artCup: {
+    width: 38,
+    height: 47,
+    marginTop: 22,
+    borderBottomLeftRadius: 9,
+    borderBottomRightRadius: 9,
+    backgroundColor: '#EFE4CC',
     borderWidth: 1,
-    borderColor: '#3E4541',
+    borderColor: 'rgba(47,36,29,0.18)',
   },
-  code: {
-    color: colors.goldSoft,
-    fontSize: 15,
-    fontWeight: '900',
-    letterSpacing: 1.7,
+  artFoam: {
+    position: 'absolute',
+    top: 22,
+    width: 43,
+    height: 16,
+    borderRadius: 10,
+    backgroundColor: '#FFF9ED',
   },
-  boardLabel: {
-    color: colors.white,
-    fontSize: 16,
-    fontWeight: '700',
-    marginLeft: 14,
-    flex: 1,
+  destinationBottom: {
+    minHeight: 69,
+    padding: 11,
   },
-  gate: {
-    color: '#A7AEA9',
-    fontSize: 10,
-    fontWeight: '700',
-    textTransform: 'uppercase',
-    marginRight: 8,
-  },
-  chevron: {
-    color: colors.gold,
-    fontSize: 24,
-    marginTop: -2,
-  },
-  promise: {
-    marginTop: 24,
-    paddingVertical: 18,
-    paddingHorizontal: 18,
-    borderRadius: radius.md,
-    backgroundColor: 'rgba(179,154,90,0.09)',
-    flexDirection: 'row',
-    gap: 12,
-    alignItems: 'center',
-  },
-  promiseStar: {
-    color: colors.gold,
-    fontSize: 16,
-  },
-  promiseText: {
-    flex: 1,
-    color: colors.muted,
+  destinationCode: {
+    color: colors.ink,
+    fontFamily: 'Georgia',
     fontSize: 12,
-    lineHeight: 18,
+  },
+  destinationLabel: {
+    color: colors.ink,
+    fontFamily: 'Georgia',
+    fontSize: 16,
+    marginTop: 2,
+  },
+  destinationArrow: {
+    position: 'absolute',
+    right: 10,
+    top: 27,
+    color: colors.muted,
+    fontSize: 19,
+  },
+  orderAgain: {
+    marginHorizontal: 20,
+    minHeight: 78,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: colors.line,
+    backgroundColor: colors.paper,
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 9,
+  },
+  orderThumb: {
+    width: 62,
+    height: 60,
+    borderRadius: 12,
+    overflow: 'hidden',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#E5D5B9',
+  },
+  orderCopy: {
+    marginLeft: 12,
+    flex: 1,
+  },
+  orderTitle: {
+    color: colors.ink,
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  orderMeta: {
+    color: colors.muted,
+    fontSize: 11,
+    marginTop: 5,
+  },
+  orderChevron: {
+    color: colors.muted,
+    fontSize: 25,
+    paddingHorizontal: 8,
+  },
+  previewNote: {
+    paddingHorizontal: 36,
+    textAlign: 'center',
+    marginTop: 24,
+    color: '#958B80',
+    fontSize: 9,
+    lineHeight: 14,
   },
 });
