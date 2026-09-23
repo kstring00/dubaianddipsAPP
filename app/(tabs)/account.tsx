@@ -3,7 +3,8 @@ import * as Haptics from 'expo-haptics';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { BrandMark } from '@/components/BrandMark';
-import { colors, radius } from '@/constants/theme';
+import { BrandPattern } from '@/components/BrandPattern';
+import { colors, fonts, radius, shadow } from '@/constants/theme';
 
 const rows = [
   ['Notifications', 'Configure'],
@@ -29,16 +30,29 @@ export default function AccountScreen() {
           stay with Toast when those channels are activated.
         </Text>
 
-        <View style={styles.pass}>
-          <Text style={styles.passLabel}>PASSENGER</Text>
-          <Text style={styles.passName}>Sweet-tooth traveler</Text>
-          <View style={styles.passRule} />
-          <View style={styles.passBottom}>
+        <View style={styles.passport}>
+          <BrandPattern color={colors.mintCondition} opacity={0.08} dense />
+          <View style={styles.passportTop}>
+            <BrandMark compact light />
+            <Text style={styles.passportType}>D&D{'
+'}PASSPORT</Text>
+          </View>
+
+          <View style={styles.passportCenter}>
+            <Text style={styles.passportStar}>✦</Text>
+            <Text style={styles.passportName}>Sweet-tooth traveler</Text>
+            <Text style={styles.passportSub}>SWEET DESTINATIONS AHEAD</Text>
+          </View>
+
+          <View style={styles.passportBottom}>
             <View>
               <Text style={styles.passLabel}>HOME AIRPORT</Text>
               <Text style={styles.passValue}>DXB & DIPS</Text>
             </View>
-            <Text style={styles.passStar}>✦</Text>
+            <View>
+              <Text style={styles.passLabel}>STATUS</Text>
+              <Text style={styles.passValue}>BOARDING</Text>
+            </View>
           </View>
         </View>
 
@@ -68,70 +82,102 @@ export default function AccountScreen() {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: colors.cream },
-  container: { flex: 1, padding: 22, paddingTop: 32 },
+  safe: { flex: 1, backgroundColor: colors.offWhite },
+  container: { flex: 1, padding: 22, paddingTop: 30 },
   profileTop: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 15,
+    gap: 14,
   },
   profileCopy: { flex: 1 },
   eyebrow: {
-    color: colors.gold,
-    fontSize: 9,
+    color: colors.courtyard,
+    fontFamily: fonts.narrow,
+    fontSize: 8,
     fontWeight: '900',
-    letterSpacing: 2.2,
+    letterSpacing: 2.1,
   },
   title: {
-    color: colors.ink,
-    fontFamily: 'Georgia',
-    fontSize: 31,
-    marginTop: 4,
+    color: colors.bark,
+    fontFamily: fonts.body,
+    fontSize: 28,
+    fontWeight: '500',
+    marginTop: 3,
   },
   body: {
     color: colors.muted,
-    fontSize: 13,
-    lineHeight: 20,
+    fontFamily: fonts.body,
+    fontSize: 12,
+    lineHeight: 19,
+    marginTop: 20,
+  },
+  passport: {
+    minHeight: 260,
+    marginTop: 25,
+    borderRadius: radius.lg,
+    backgroundColor: colors.courtyard,
+    padding: 22,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#60715C',
+    ...shadow.card,
+  },
+  passportTop: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+  },
+  passportType: {
+    color: colors.mintCondition,
+    fontFamily: fonts.narrow,
+    fontSize: 8,
+    lineHeight: 12,
+    letterSpacing: 2.1,
+    textAlign: 'right',
+    fontWeight: '900',
+  },
+  passportCenter: {
+    alignItems: 'center',
     marginTop: 22,
   },
-  pass: {
-    marginTop: 28,
-    borderRadius: radius.lg,
-    backgroundColor: colors.paper,
-    borderWidth: 1,
-    borderColor: colors.line,
-    padding: 22,
+  passportStar: {
+    color: colors.brownedSugar,
+    fontSize: 20,
   },
-  passLabel: {
-    color: colors.gold,
-    fontSize: 8,
-    fontWeight: '900',
-    letterSpacing: 2,
+  passportName: {
+    color: colors.offWhite,
+    fontFamily: fonts.display,
+    fontSize: 25,
+    marginTop: 8,
   },
-  passName: {
-    color: colors.ink,
-    fontFamily: 'Georgia',
-    fontSize: 26,
+  passportSub: {
+    color: colors.mintCondition,
+    fontFamily: fonts.narrow,
+    fontSize: 7,
+    letterSpacing: 1.8,
     marginTop: 7,
   },
-  passRule: {
-    height: 1,
-    backgroundColor: colors.line,
-    marginVertical: 20,
-  },
-  passBottom: {
+  passportBottom: {
+    marginTop: 30,
+    paddingTop: 14,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: 'rgba(230,219,198,0.28)',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-end',
   },
-  passValue: {
-    color: colors.pine,
-    fontSize: 13,
-    fontWeight: '800',
-    marginTop: 5,
+  passLabel: {
+    color: 'rgba(230,219,198,0.56)',
+    fontFamily: fonts.narrow,
+    fontSize: 6,
     letterSpacing: 1,
   },
-  passStar: { color: colors.gold, fontSize: 24 },
+  passValue: {
+    color: colors.offWhite,
+    fontFamily: fonts.narrow,
+    fontSize: 9,
+    marginTop: 4,
+    letterSpacing: 1,
+  },
   panel: {
     marginTop: 18,
     backgroundColor: colors.paper,
@@ -141,7 +187,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   row: {
-    minHeight: 64,
+    minHeight: 61,
     paddingHorizontal: 17,
     flexDirection: 'row',
     alignItems: 'center',
@@ -151,22 +197,36 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: colors.line,
   },
-  rowLabel: { color: colors.ink, fontSize: 13, fontWeight: '700' },
-  rowAction: { flexDirection: 'row', alignItems: 'center', gap: 7 },
+  rowLabel: {
+    color: colors.bark,
+    fontFamily: fonts.body,
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  rowAction: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 7,
+  },
   action: {
-    color: colors.gold,
-    fontSize: 9,
+    color: colors.brownedSugar,
+    fontFamily: fonts.narrow,
+    fontSize: 8,
     fontWeight: '800',
     textTransform: 'uppercase',
     letterSpacing: 0.8,
   },
-  chevron: { color: colors.muted, fontSize: 20 },
+  chevron: {
+    color: colors.courtyard,
+    fontSize: 20,
+  },
   version: {
     textAlign: 'center',
-    color: '#9C9288',
-    fontSize: 8,
+    color: '#8E817A',
+    fontFamily: fonts.narrow,
+    fontSize: 7,
     fontWeight: '800',
     letterSpacing: 1.5,
-    marginTop: 24,
+    marginTop: 22,
   },
 });
