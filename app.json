@@ -2,19 +2,30 @@
   "expo": {
     "name": "Dubai & Dips",
     "slug": "dubaianddips",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "orientation": "portrait",
     "scheme": "dubaianddips",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
+    "icon": "./assets/icon.png",
+    "splash": {
+      "backgroundColor": "#F5F0E6",
+      "resizeMode": "contain"
+    },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.dubaianddips.app"
+      "bundleIdentifier": "com.dubaianddips.app",
+      "buildNumber": "1",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "package": "com.dubaianddips.app",
+      "versionCode": 1,
       "adaptiveIcon": {
-        "backgroundColor": "#F4EFE5"
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#F5F0E6"
       },
       "edgeToEdgeEnabled": true
     },
