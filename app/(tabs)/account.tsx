@@ -34,8 +34,7 @@ export default function AccountScreen() {
           <BrandPattern color={colors.mintCondition} opacity={0.08} dense />
           <View style={styles.passportTop}>
             <BrandMark compact light />
-            <Text style={styles.passportType}>D&D{'
-'}PASSPORT</Text>
+            <Text style={styles.passportType}>D&D{'\n'}PASSPORT</Text>
           </View>
 
           <View style={styles.passportCenter}>
