@@ -1,90 +1,118 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { colors } from '@/constants/theme';
+import { colors, fonts } from '@/constants/theme';
 
-export function BrandMark({ compact = false }: { compact?: boolean }) {
+function Tower({ light = false }: { light?: boolean }) {
   return (
-    <View style={[styles.wrap, compact && styles.compactWrap]}>
-      <View style={[styles.monogram, compact && styles.compactMonogram]}>
-        <Text style={[styles.d, compact && styles.compactD]}>D</Text>
-        <Text style={[styles.amp, compact && styles.compactAmp]}>&</Text>
-        <Text style={[styles.d2, compact && styles.compactD2]}>D</Text>
-        <Text style={styles.spark}>✦</Text>
+    <View style={styles.towerWrap}>
+      <View style={[styles.towerTip, { borderBottomColor: light ? colors.offWhite : colors.bark }]} />
+      <View style={[styles.towerBody, { backgroundColor: light ? colors.offWhite : colors.bark }]} />
+      <View style={[styles.towerBase, { backgroundColor: light ? colors.offWhite : colors.bark }]} />
+    </View>
+  );
+}
+
+export function BrandMark({
+  compact = false,
+  light = false,
+}: {
+  compact?: boolean;
+  light?: boolean;
+}) {
+  const ink = light ? colors.offWhite : colors.bark;
+
+  if (compact) {
+    return (
+      <View style={styles.markWrap}>
+        <Text style={[styles.markD, { color: ink }]}>D</Text>
+        <Text style={[styles.markStar, { color: colors.brownedSugar }]}>✦</Text>
       </View>
-      {!compact && <Text style={styles.wordmark}>DUBAI & DIPS</Text>}
+    );
+  }
+
+  return (
+    <View style={styles.secondaryWrap}>
+      <View style={styles.logoRow}>
+        <Text style={[styles.logoText, { color: ink }]}>DUBA</Text>
+        <Tower light={light} />
+      </View>
+      <View style={styles.logoRowBottom}>
+        <Text style={[styles.amp, { color: ink }]}>&</Text>
+        <Text style={[styles.logoText, { color: ink }]}>DIPS</Text>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  wrap: {
+  secondaryWrap: {
     alignItems: 'flex-start',
+    justifyContent: 'center',
   },
-  compactWrap: {
+  logoRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    height: 31,
+  },
+  logoRowBottom: {
+    flexDirection: 'row',
     alignItems: 'center',
+    height: 31,
+    marginTop: -4,
   },
-  monogram: {
-    width: 92,
-    height: 54,
-    position: 'relative',
-  },
-  compactMonogram: {
-    width: 54,
-    height: 42,
-  },
-  d: {
-    position: 'absolute',
-    left: 0,
-    top: -8,
-    color: colors.pine,
-    fontFamily: 'Georgia',
-    fontSize: 49,
-    fontWeight: '600',
-  },
-  d2: {
-    position: 'absolute',
-    left: 32,
-    top: -1,
-    color: colors.gold,
-    fontFamily: 'Georgia',
-    fontSize: 42,
-    fontWeight: '600',
+  logoText: {
+    fontFamily: fonts.display,
+    fontSize: 28,
+    lineHeight: 31,
+    letterSpacing: -1.6,
   },
   amp: {
+    fontFamily: fonts.display,
+    fontSize: 31,
+    lineHeight: 31,
+    marginRight: 1,
+    marginTop: -1,
+  },
+  towerWrap: {
+    width: 11,
+    height: 29,
+    marginLeft: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  towerTip: {
+    width: 0,
+    height: 0,
+    borderLeftWidth: 2,
+    borderRightWidth: 2,
+    borderBottomWidth: 7,
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+  },
+  towerBody: {
+    width: 3,
+    height: 16,
+  },
+  towerBase: {
+    width: 7,
+    height: 4,
+  },
+  markWrap: {
+    width: 54,
+    height: 54,
+    position: 'relative',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  markD: {
+    fontFamily: fonts.display,
+    fontSize: 48,
+    lineHeight: 52,
+    letterSpacing: -3,
+  },
+  markStar: {
     position: 'absolute',
-    left: 29,
-    top: 18,
-    zIndex: 4,
-    color: colors.ink,
-    fontFamily: 'Georgia',
-    fontSize: 14,
-    fontWeight: '700',
-  },
-  spark: {
-    position: 'absolute',
-    left: 63,
+    right: 0,
     top: 2,
-    color: colors.gold,
-    fontSize: 10,
-  },
-  compactD: {
-    fontSize: 34,
-    top: -3,
-  },
-  compactD2: {
-    fontSize: 29,
-    left: 23,
-    top: 2,
-  },
-  compactAmp: {
-    left: 21,
-    top: 16,
-    fontSize: 10,
-  },
-  wordmark: {
-    color: colors.ink,
-    fontSize: 9,
-    fontWeight: '800',
-    letterSpacing: 3.2,
-    marginTop: 1,
+    fontSize: 15,
   },
 });
