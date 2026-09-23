@@ -11,26 +11,33 @@ export const toastLinks = {
   rewards: env.EXPO_PUBLIC_TOAST_REWARDS_URL ?? '',
 };
 
-function isReady(url?: string) {
-  return Boolean(url && /^https?:\/\//.test(url) && !url.includes('REPLACE_ME'));
+export const previewMode = env.EXPO_PUBLIC_PREVIEW_MODE !== 'false';
+
+export function hasToastLink(url?: string) {
+  return Boolean(
+    url &&
+      /^https?:\/\//.test(url) &&
+      !url.includes('REPLACE_ME')
+  );
 }
 
 export async function openToast(url?: string) {
-  const destination = isReady(url) ? url! : toastLinks.order;
+  const destination = hasToastLink(url) ? url! : toastLinks.order;
 
-  if (!isReady(destination)) {
+  if (!hasToastLink(destination)) {
     Alert.alert(
-      'Toast link needed',
-      'Add the real Toast Online Ordering URL to EXPO_PUBLIC_TOAST_ORDER_URL in your .env file.'
+      'Online ordering is almost here',
+      'Dubai & Dips will connect this button to Toast as soon as online ordering is activated.'
     );
-    return;
+    return false;
   }
 
   const supported = await Linking.canOpenURL(destination);
   if (!supported) {
-    Alert.alert('Unable to open Toast', 'Please check the ordering URL.');
-    return;
+    Alert.alert('Unable to open ordering', 'Please try again in a moment.');
+    return false;
   }
 
   await Linking.openURL(destination);
+  return true;
 }
