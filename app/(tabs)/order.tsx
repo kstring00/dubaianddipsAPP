@@ -29,8 +29,7 @@ export default function OrderScreen() {
       >
         <View style={styles.header}>
           <Text style={styles.eyebrow}>DEPARTURES</Text>
-          <Text style={styles.title}>Pick your{'
-'}next destination.</Text>
+          <Text style={styles.title}>Pick your{'\n'}next destination.</Text>
           <Text style={styles.subtitle}>
             Browse the Dubai & Dips menu here. Toast will handle the live cart,
             modifiers, payment and pickup once online ordering is activated.
