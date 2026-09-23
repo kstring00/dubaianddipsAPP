@@ -1,301 +1,165 @@
-import {
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { BrandMark } from '@/components/BrandMark';
-import { BrandPattern } from '@/components/BrandPattern';
-import { colors, fonts, radius, shadow } from '@/constants/theme';
+import { AppText } from '@/components/shared/AppText';
+import { MembershipCard } from '@/components/rewards/MembershipCard';
+import { PrimaryButton } from '@/components/shared/PrimaryButton';
+import { StarFour } from '@/components/brand/StarFour';
+import { colors, gutter, space } from '@/constants/theme';
 import { hasToastLink, openToast, previewMode, toastLinks } from '@/lib/toast';
+
+type IoniconName = keyof typeof Ionicons.glyphMap;
+
+const steps: { icon: IoniconName; title: string; body: string }[] = [
+  {
+    icon: 'sparkles-outline',
+    title: 'Earn',
+    body: 'Collect points on every order once Toast Loyalty is live.',
+  },
+  {
+    icon: 'gift-outline',
+    title: 'Redeem',
+    body: 'Trade points for drinks, desserts and member-only drops.',
+  },
+  {
+    icon: 'airplane-outline',
+    title: 'Travel further',
+    body: 'Seasonal destinations unlock extra rewards for members.',
+  },
+];
 
 export default function RewardsScreen() {
   const rewardsLive = hasToastLink(toastLinks.rewards);
 
   return (
-    <SafeAreaView style={styles.safe}>
-      <View style={styles.container}>
+    <SafeAreaView style={styles.safe} edges={['top']}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.content}
+      >
         <View style={styles.header}>
-          <BrandMark compact />
-          <View style={styles.headerCopy}>
-            <Text style={styles.eyebrow}>BOARDING CLUB</Text>
-            <Text style={styles.title}>A sweeter tomorrow.</Text>
-          </View>
+          <AppText variant="micro" color={colors.green}>
+            Boarding Club
+          </AppText>
+          <AppText variant="hero" color={colors.ink} style={styles.title}>
+            Membership,{'\n'}first class.
+          </AppText>
         </View>
 
-        <Text style={styles.body}>
-          Built to connect to Toast Loyalty when the restaurant activates it.
-          Preview mode shows sample points only for design testing.
-        </Text>
+        <View style={styles.cardWrap}>
+          <MembershipCard rewardsLive={rewardsLive} />
+        </View>
 
-        <View style={styles.card}>
-          <BrandPattern color={colors.mintCondition} opacity={0.08} dense />
+        {previewMode ? (
+          <AppText variant="footnote" color={colors.inkFaint} style={styles.previewNote}>
+            Sample balance for design preview — real points come from Toast
+            Loyalty at launch.
+          </AppText>
+        ) : null}
 
-          <View style={styles.barcode}>
-            {Array.from({ length: 22 }).map((_, index) => (
-              <View
-                key={index}
-                style={[
-                  styles.bar,
-                  { height: 10 + ((index * 7) % 15) },
-                ]}
-              />
-            ))}
-          </View>
-
-          <View style={styles.cardTop}>
-            <Text style={styles.cardLabel}>D&D AIRLINES</Text>
-            <Text style={styles.cardStar}>✦</Text>
-          </View>
-
-          <Text style={styles.cardTitle}>BOARDING CLUB</Text>
-
-          <View style={styles.pointsRow}>
-            <Text style={styles.plane}>✈</Text>
-            <View>
-              <Text style={styles.points}>
-                {previewMode ? '420' : rewardsLive ? 'Your points' : 'Coming soon'}
-              </Text>
-              <Text style={styles.pointsLabel}>
-                {previewMode ? 'POINTS · PREVIEW' : rewardsLive ? 'TOAST LOYALTY' : 'REWARDS'}
-              </Text>
-            </View>
-          </View>
-
-          <View style={styles.progressTrack}>
+        <View style={styles.steps}>
+          {steps.map((step, index) => (
             <View
-              style={[
-                styles.progressFill,
-                { width: previewMode ? '72%' : rewardsLive ? '45%' : '18%' },
-              ]}
-            />
-          </View>
-
-          <View style={styles.ticketMeta}>
-            <View>
-              <Text style={styles.metaLabel}>FLIGHT</Text>
-              <Text style={styles.metaValue}>D&D420</Text>
-            </View>
-            <View>
-              <Text style={styles.metaLabel}>GATE</Text>
-              <Text style={styles.metaValue}>CLUB</Text>
-            </View>
-            <View>
-              <Text style={styles.metaLabel}>SEAT</Text>
-              <Text style={styles.metaValue}>VIP</Text>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.perkRow}>
-          {['Earn', 'Redeem', 'Repeat'].map((label, i) => (
-            <View key={label} style={styles.perk}>
-              <Text style={styles.perkIcon}>{i === 0 ? '✦' : i === 1 ? '♢' : '↻'}</Text>
-              <Text style={styles.perkText}>{label}</Text>
+              key={step.title}
+              style={[styles.step, index > 0 && styles.stepBorder]}
+            >
+              <View style={styles.stepIcon}>
+                <Ionicons name={step.icon} size={17} color={colors.green} />
+              </View>
+              <View style={styles.stepCopy}>
+                <AppText variant="heading" color={colors.ink}>
+                  {step.title}
+                </AppText>
+                <AppText variant="caption" color={colors.inkSoft}>
+                  {step.body}
+                </AppText>
+              </View>
             </View>
           ))}
         </View>
 
-        <Pressable
+        <View style={styles.memberRow}>
+          <StarFour size={11} color={colors.sugar} />
+          <AppText variant="footnote" color={colors.inkSoft} style={styles.memberText}>
+            Membership, points and redemptions are managed by Toast — the app
+            is your boarding pass to them.
+          </AppText>
+        </View>
+
+        <PrimaryButton
+          label={rewardsLive ? 'Open live rewards' : 'Rewards coming soon'}
+          muted={!rewardsLive}
           onPress={() => openToast(toastLinks.rewards || toastLinks.order)}
-          style={({ pressed }) => [
-            styles.button,
-            pressed && styles.buttonPressed,
-          ]}
-        >
-          <Text style={styles.buttonText}>
-            {rewardsLive ? 'Open live rewards' : 'Toast rewards coming soon'}
-          </Text>
-          <Text style={styles.buttonArrow}>→</Text>
-        </Pressable>
-      </View>
+          accessibilityHint="Opens Toast rewards"
+          style={styles.cta}
+        />
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: colors.offWhite },
-  container: { flex: 1, padding: 22, paddingTop: 30 },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 13,
+  safe: {
+    flex: 1,
+    backgroundColor: colors.canvas,
   },
-  headerCopy: { flex: 1 },
-  eyebrow: {
-    color: colors.courtyard,
-    fontFamily: fonts.narrow,
-    fontSize: 9,
-    fontWeight: '900',
-    letterSpacing: 2.4,
+  content: {
+    paddingBottom: space.x4l,
+  },
+  header: {
+    paddingHorizontal: gutter,
+    paddingTop: space.xxl,
   },
   title: {
-    color: colors.bark,
-    fontFamily: fonts.body,
-    fontSize: 28,
-    lineHeight: 32,
-    fontWeight: '500',
-    marginTop: 3,
+    marginTop: space.sm,
   },
-  body: {
-    color: colors.muted,
-    fontFamily: fonts.body,
-    fontSize: 12,
-    lineHeight: 19,
-    marginTop: 18,
+  cardWrap: {
+    paddingHorizontal: gutter,
+    marginTop: space.xxl,
   },
-  card: {
-    minHeight: 300,
-    borderRadius: radius.xl,
-    padding: 22,
-    marginTop: 26,
-    overflow: 'hidden',
-    backgroundColor: colors.courtyard,
-    borderWidth: 1,
-    borderColor: '#60715C',
-    ...shadow.card,
+  previewNote: {
+    paddingHorizontal: gutter,
+    marginTop: space.md,
   },
-  barcode: {
-    height: 29,
+  steps: {
+    marginHorizontal: gutter,
+    marginTop: space.x3l,
+  },
+  step: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 2,
-    marginBottom: 12,
+    gap: space.lg,
+    paddingVertical: space.lg,
   },
-  bar: {
-    width: 2,
-    backgroundColor: colors.offWhite,
-    opacity: 0.72,
-  },
-  cardTop: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  cardLabel: {
-    color: colors.mintCondition,
-    fontFamily: fonts.narrow,
-    fontSize: 8,
-    fontWeight: '900',
-    letterSpacing: 2.1,
-  },
-  cardStar: {
-    color: colors.brownedSugar,
-    fontSize: 16,
-  },
-  cardTitle: {
-    color: colors.offWhite,
-    fontFamily: fonts.narrow,
-    fontSize: 12,
-    letterSpacing: 2.8,
-    marginTop: 12,
-  },
-  pointsRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 18,
-    gap: 14,
-  },
-  plane: {
-    color: colors.offWhite,
-    fontSize: 27,
-  },
-  points: {
-    color: colors.offWhite,
-    fontFamily: fonts.display,
-    fontSize: 36,
-  },
-  pointsLabel: {
-    color: 'rgba(230,219,198,0.65)',
-    fontFamily: fonts.narrow,
-    fontSize: 7,
-    fontWeight: '900',
-    letterSpacing: 1.7,
-    marginTop: 2,
-  },
-  progressTrack: {
-    height: 8,
-    borderRadius: 8,
-    backgroundColor: 'rgba(230,219,198,0.14)',
-    marginTop: 20,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: 'rgba(209,227,210,0.42)',
-  },
-  progressFill: {
-    height: '100%',
-    borderRadius: 8,
-    backgroundColor: colors.mintCondition,
-  },
-  ticketMeta: {
-    marginTop: 20,
-    paddingTop: 14,
+  stepBorder: {
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: 'rgba(230,219,198,0.28)',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    borderTopColor: colors.line,
   },
-  metaLabel: {
-    color: 'rgba(230,219,198,0.58)',
-    fontFamily: fonts.narrow,
-    fontSize: 6,
-    letterSpacing: 1,
-  },
-  metaValue: {
-    color: colors.offWhite,
-    fontFamily: fonts.narrow,
-    fontSize: 9,
-    marginTop: 3,
-  },
-  perkRow: {
-    flexDirection: 'row',
-    gap: 10,
-    marginTop: 18,
-  },
-  perk: {
-    flex: 1,
-    minHeight: 80,
-    borderRadius: radius.md,
-    backgroundColor: colors.paper,
-    borderWidth: 1,
-    borderColor: colors.line,
+  stepIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: colors.mint,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  perkIcon: {
-    color: colors.brownedSugar,
-    fontSize: 18,
+  stepCopy: {
+    flex: 1,
+    gap: 2,
   },
-  perkText: {
-    color: colors.bark,
-    fontFamily: fonts.body,
-    fontSize: 11,
-    fontWeight: '700',
-    marginTop: 7,
-  },
-  button: {
-    marginTop: 18,
-    height: 58,
-    borderRadius: radius.pill,
-    backgroundColor: colors.courtyard,
-    paddingHorizontal: 22,
+  memberRow: {
+    marginHorizontal: gutter,
+    marginTop: space.sm,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    gap: space.md,
   },
-  buttonPressed: {
-    opacity: 0.92,
-    transform: [{ scale: 0.99 }],
+  memberText: {
+    flex: 1,
   },
-  buttonText: {
-    color: colors.offWhite,
-    fontFamily: fonts.body,
-    fontSize: 13,
-    fontWeight: '800',
-  },
-  buttonArrow: {
-    color: colors.mintCondition,
-    fontSize: 22,
+  cta: {
+    marginHorizontal: gutter,
+    marginTop: space.xxl,
   },
 });

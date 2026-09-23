@@ -2,16 +2,24 @@
 
 A real iOS/Android app for Dubai & Dips built with Expo + React Native + Expo Router.
 
-The visual direction mirrors the approved luxury concept:
+The visual system comes directly from the official Dubai & Dips brand guide:
 
-- cream / deep green / muted gold palette
-- Dubai skyline hero
-- Boarding Club rewards card
-- featured Dubai Chocolate Frappe
-- travel-style "Departures" menu categories
-- "Order again" treatment
-- native bottom navigation
-- haptics and polished press states
+- official palette (Courtyard, Natural Choice, Bark, Browned Sugar, Off-White, Mint Condition)
+- tone-on-tone four-pointed-star lattice pattern
+- D&D AIRLINES boarding-pass tags (barcodes, edge rails, FLIGHT/GATE/SEAT, QR detail)
+- Boarding Club membership card and account "passport"
+- departure-board menu with travel-destination categories
+- typography role tokens (Neue Regrade / GothamSS Narrow / IvyMode / Editor's Note roles
+  with native fallbacks until licensed font files are added in `constants/theme.ts`)
+- native bottom navigation, haptics and polished press states
+
+### Structure
+
+- `constants/theme.ts` — design tokens: colors, type roles, spacing, radii, shadows, motion
+- `components/brand/` — brand objects: pattern, star, wordmark, boarding pass, barcode, QR
+- `components/shared/` — AppText, PressableScale, PrimaryButton, SectionHeader
+- `components/home|menu|rewards/` — screen sections
+- `lib/toast.ts` — Toast handoff; `lib/haptics.ts` — haptic vocabulary
 
 ## Ordering architecture
 
