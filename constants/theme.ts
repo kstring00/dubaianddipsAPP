@@ -1,36 +1,56 @@
+import { Platform } from 'react-native';
+
 export const colors = {
-  cream: '#F5F0E6',
-  creamDeep: '#EDE3D2',
-  paper: '#FFFDF8',
-  pine: '#203F2C',
-  pineSoft: '#355A40',
-  pineDark: '#142A1D',
-  gold: '#B49555',
-  goldSoft: '#D8C79B',
-  goldPale: '#E9DFC5',
-  ink: '#2F241D',
-  muted: '#73685E',
+  // Official palette from the Dubai & Dips brand guide.
+  courtyard: '#475842',
+  naturalChoice: '#E3D3D0',
+  bark: '#493C35',
+  brownedSugar: '#C2835F',
+  offWhite: '#E6DBC6',
+  mintCondition: '#D1E3D2',
+
+  // Semantic aliases used throughout the app.
+  cream: '#E6DBC6',
+  creamDeep: '#E3D3D0',
+  paper: '#F7F1E7',
+  pine: '#475842',
+  pineSoft: '#5E6D59',
+  pineDark: '#34412F',
+  gold: '#C2835F',
+  goldSoft: '#D6A383',
+  goldPale: '#E9CBB9',
+  ink: '#493C35',
+  muted: '#75665E',
   white: '#FFFFFF',
-  line: '#E3D9C8',
-  chocolate: '#56392D',
-  pistachio: '#A8B878',
-  matcha: '#829D66',
+  line: '#D6C8BA',
+  chocolate: '#493C35',
+  pistachio: '#93A27F',
+  matcha: '#71846B',
+} as const;
+
+export const fonts = {
+  // The guide specifies Neue Regrade, GothamSS Narrow, IvyMode and Editor's Note.
+  // We use native fallbacks until the licensed brand font files are supplied.
+  body: Platform.select({ ios: 'Avenir Next', android: 'sans-serif' })!,
+  narrow: Platform.select({ ios: 'AvenirNextCondensed-Medium', android: 'sans-serif-condensed' })!,
+  display: Platform.select({ ios: 'Times New Roman', android: 'serif' })!,
+  editorial: Platform.select({ ios: 'Georgia', android: 'serif' })!,
 } as const;
 
 export const radius = {
-  sm: 12,
-  md: 18,
-  lg: 26,
-  xl: 34,
+  sm: 10,
+  md: 16,
+  lg: 22,
+  xl: 30,
   pill: 999,
 } as const;
 
 export const shadow = {
   card: {
-    shadowColor: '#3E2E22',
+    shadowColor: colors.bark,
     shadowOpacity: 0.10,
-    shadowRadius: 18,
+    shadowRadius: 16,
     shadowOffset: { width: 0, height: 8 },
-    elevation: 6,
+    elevation: 5,
   },
 };
