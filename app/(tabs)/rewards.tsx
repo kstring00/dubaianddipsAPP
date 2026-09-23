@@ -4,10 +4,11 @@ import {
   Text,
   View,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { colors, radius, shadow } from '@/constants/theme';
+import { BrandMark } from '@/components/BrandMark';
+import { BrandPattern } from '@/components/BrandPattern';
+import { colors, fonts, radius, shadow } from '@/constants/theme';
 import { hasToastLink, openToast, previewMode, toastLinks } from '@/lib/toast';
 
 export default function RewardsScreen() {
@@ -16,24 +17,40 @@ export default function RewardsScreen() {
   return (
     <SafeAreaView style={styles.safe}>
       <View style={styles.container}>
-        <Text style={styles.eyebrow}>BOARDING CLUB</Text>
-        <Text style={styles.title}>A sweeter{'\n'}tomorrow.</Text>
+        <View style={styles.header}>
+          <BrandMark compact />
+          <View style={styles.headerCopy}>
+            <Text style={styles.eyebrow}>BOARDING CLUB</Text>
+            <Text style={styles.title}>A sweeter tomorrow.</Text>
+          </View>
+        </View>
+
         <Text style={styles.body}>
-          This screen is ready for Toast Loyalty. Until that channel is activated,
-          preview builds show sample points and production builds show a launch
-          message instead.
+          Built to connect to Toast Loyalty when the restaurant activates it.
+          Preview mode shows sample points only for design testing.
         </Text>
 
         <View style={styles.card}>
-          <LinearGradient
-            colors={[colors.pineSoft, colors.pineDark]}
-            style={StyleSheet.absoluteFill}
-          />
+          <BrandPattern color={colors.mintCondition} opacity={0.08} dense />
+
+          <View style={styles.barcode}>
+            {Array.from({ length: 22 }).map((_, index) => (
+              <View
+                key={index}
+                style={[
+                  styles.bar,
+                  { height: 10 + ((index * 7) % 15) },
+                ]}
+              />
+            ))}
+          </View>
+
           <View style={styles.cardTop}>
-            <Text style={styles.cardLabel}>DUBAI & DIPS</Text>
+            <Text style={styles.cardLabel}>D&D AIRLINES</Text>
             <Text style={styles.cardStar}>✦</Text>
           </View>
-          <Text style={styles.cardTitle}>Boarding Club</Text>
+
+          <Text style={styles.cardTitle}>BOARDING CLUB</Text>
 
           <View style={styles.pointsRow}>
             <Text style={styles.plane}>✈</Text>
@@ -55,13 +72,21 @@ export default function RewardsScreen() {
               ]}
             />
           </View>
-          <Text style={styles.progressText}>
-            {previewMode
-              ? '80 points until your next reward'
-              : rewardsLive
-                ? 'Open Toast to view your live balance'
-                : 'Boarding Club will activate with Toast Loyalty'}
-          </Text>
+
+          <View style={styles.ticketMeta}>
+            <View>
+              <Text style={styles.metaLabel}>FLIGHT</Text>
+              <Text style={styles.metaValue}>D&D420</Text>
+            </View>
+            <View>
+              <Text style={styles.metaLabel}>GATE</Text>
+              <Text style={styles.metaValue}>CLUB</Text>
+            </View>
+            <View>
+              <Text style={styles.metaLabel}>SEAT</Text>
+              <Text style={styles.metaValue}>VIP</Text>
+            </View>
+          </View>
         </View>
 
         <View style={styles.perkRow}>
@@ -91,91 +116,137 @@ export default function RewardsScreen() {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: colors.cream },
-  container: { flex: 1, padding: 22, paddingTop: 34 },
+  safe: { flex: 1, backgroundColor: colors.offWhite },
+  container: { flex: 1, padding: 22, paddingTop: 30 },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 13,
+  },
+  headerCopy: { flex: 1 },
   eyebrow: {
-    color: colors.gold,
-    fontSize: 10,
+    color: colors.courtyard,
+    fontFamily: fonts.narrow,
+    fontSize: 9,
     fontWeight: '900',
-    letterSpacing: 2.8,
+    letterSpacing: 2.4,
   },
   title: {
-    color: colors.ink,
-    fontFamily: 'Georgia',
-    fontSize: 41,
-    lineHeight: 44,
-    marginTop: 9,
+    color: colors.bark,
+    fontFamily: fonts.body,
+    fontSize: 28,
+    lineHeight: 32,
+    fontWeight: '500',
+    marginTop: 3,
   },
   body: {
     color: colors.muted,
-    fontSize: 13,
-    lineHeight: 20,
-    marginTop: 12,
+    fontFamily: fonts.body,
+    fontSize: 12,
+    lineHeight: 19,
+    marginTop: 18,
   },
   card: {
-    minHeight: 286,
+    minHeight: 300,
     borderRadius: radius.xl,
-    padding: 24,
-    marginTop: 30,
+    padding: 22,
+    marginTop: 26,
     overflow: 'hidden',
+    backgroundColor: colors.courtyard,
     borderWidth: 1,
-    borderColor: 'rgba(216,199,155,0.46)',
+    borderColor: '#60715C',
     ...shadow.card,
+  },
+  barcode: {
+    height: 29,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
+    marginBottom: 12,
+  },
+  bar: {
+    width: 2,
+    backgroundColor: colors.offWhite,
+    opacity: 0.72,
   },
   cardTop: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   cardLabel: {
-    color: colors.goldSoft,
-    fontSize: 9,
+    color: colors.mintCondition,
+    fontFamily: fonts.narrow,
+    fontSize: 8,
     fontWeight: '900',
-    letterSpacing: 2.2,
+    letterSpacing: 2.1,
   },
-  cardStar: { color: colors.goldSoft, fontSize: 16 },
+  cardStar: {
+    color: colors.brownedSugar,
+    fontSize: 16,
+  },
   cardTitle: {
-    color: colors.cream,
-    fontFamily: 'Georgia',
-    fontSize: 29,
-    marginTop: 15,
+    color: colors.offWhite,
+    fontFamily: fonts.narrow,
+    fontSize: 12,
+    letterSpacing: 2.8,
+    marginTop: 12,
   },
   pointsRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 30,
+    marginTop: 18,
     gap: 14,
   },
-  plane: { color: colors.goldSoft, fontSize: 28 },
+  plane: {
+    color: colors.offWhite,
+    fontSize: 27,
+  },
   points: {
-    color: colors.cream,
-    fontFamily: 'Georgia',
+    color: colors.offWhite,
+    fontFamily: fonts.display,
     fontSize: 36,
   },
   pointsLabel: {
-    color: 'rgba(245,240,230,0.65)',
-    fontSize: 8,
+    color: 'rgba(230,219,198,0.65)',
+    fontFamily: fonts.narrow,
+    fontSize: 7,
     fontWeight: '900',
-    letterSpacing: 1.8,
+    letterSpacing: 1.7,
     marginTop: 2,
   },
   progressTrack: {
     height: 8,
     borderRadius: 8,
-    backgroundColor: 'rgba(245,240,230,0.14)',
-    marginTop: 26,
+    backgroundColor: 'rgba(230,219,198,0.14)',
+    marginTop: 20,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: 'rgba(216,199,155,0.38)',
+    borderColor: 'rgba(209,227,210,0.42)',
   },
   progressFill: {
     height: '100%',
     borderRadius: 8,
-    backgroundColor: colors.goldSoft,
+    backgroundColor: colors.mintCondition,
   },
-  progressText: {
-    color: 'rgba(245,240,230,0.72)',
-    fontSize: 10,
-    marginTop: 8,
+  ticketMeta: {
+    marginTop: 20,
+    paddingTop: 14,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: 'rgba(230,219,198,0.28)',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  metaLabel: {
+    color: 'rgba(230,219,198,0.58)',
+    fontFamily: fonts.narrow,
+    fontSize: 6,
+    letterSpacing: 1,
+  },
+  metaValue: {
+    color: colors.offWhite,
+    fontFamily: fonts.narrow,
+    fontSize: 9,
+    marginTop: 3,
   },
   perkRow: {
     flexDirection: 'row',
@@ -184,7 +255,7 @@ const styles = StyleSheet.create({
   },
   perk: {
     flex: 1,
-    minHeight: 82,
+    minHeight: 80,
     borderRadius: radius.md,
     backgroundColor: colors.paper,
     borderWidth: 1,
@@ -192,9 +263,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  perkIcon: { color: colors.gold, fontSize: 18 },
+  perkIcon: {
+    color: colors.brownedSugar,
+    fontSize: 18,
+  },
   perkText: {
-    color: colors.ink,
+    color: colors.bark,
+    fontFamily: fonts.body,
     fontSize: 11,
     fontWeight: '700',
     marginTop: 7,
@@ -203,13 +278,24 @@ const styles = StyleSheet.create({
     marginTop: 18,
     height: 58,
     borderRadius: radius.pill,
-    backgroundColor: colors.pine,
+    backgroundColor: colors.courtyard,
     paddingHorizontal: 22,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  buttonPressed: { opacity: 0.92, transform: [{ scale: 0.99 }] },
-  buttonText: { color: colors.cream, fontSize: 14, fontWeight: '800' },
-  buttonArrow: { color: colors.goldSoft, fontSize: 22 },
+  buttonPressed: {
+    opacity: 0.92,
+    transform: [{ scale: 0.99 }],
+  },
+  buttonText: {
+    color: colors.offWhite,
+    fontFamily: fonts.body,
+    fontSize: 13,
+    fontWeight: '800',
+  },
+  buttonArrow: {
+    color: colors.mintCondition,
+    fontSize: 22,
+  },
 });
