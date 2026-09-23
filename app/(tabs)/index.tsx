@@ -6,18 +6,17 @@ import {
   Text,
   View,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { BoardingPass } from '@/components/BoardingPass';
 import { BrandMark } from '@/components/BrandMark';
+import { BrandPattern } from '@/components/BrandPattern';
 import { DrinkArtwork } from '@/components/DrinkArtwork';
 import { departures } from '@/constants/menu';
-import { colors, radius, shadow } from '@/constants/theme';
+import { colors, fonts, radius, shadow } from '@/constants/theme';
 import { hasToastLink, openToast, previewMode, toastLinks } from '@/lib/toast';
-
-const skyline = [28, 42, 30, 66, 34, 112, 48, 76, 39, 58, 32, 45];
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -45,44 +44,33 @@ export default function HomeScreen() {
         contentContainerStyle={styles.content}
       >
         <View style={styles.hero}>
-          <LinearGradient
-            colors={['#FFFDF8', '#F6EEDD', '#F5F0E6']}
-            style={StyleSheet.absoluteFill}
-          />
+          <BrandPattern color={colors.bark} opacity={0.035} dense />
 
           <View style={styles.topbar}>
             <BrandMark />
             <View style={styles.heroRight}>
-              <Text style={styles.microcopy}>SWEET{'\n'}DESTINATIONS{'\n'}AHEAD</Text>
+              <Text style={styles.microcopy}>SWEET{'
+'}DESTINATIONS{'
+'}AHEAD</Text>
               <Pressable
                 style={styles.bell}
                 onPress={() => Haptics.selectionAsync()}
                 accessibilityLabel="Notifications"
               >
-                <Text style={styles.bellIcon}>♢</Text>
+                <Text style={styles.bellIcon}>✦</Text>
               </Pressable>
             </View>
           </View>
 
-          <View style={styles.city}>
-            {skyline.map((height, index) => (
-              <View
-                key={index}
-                style={[
-                  styles.building,
-                  { height, opacity: index === 5 ? 0.42 : 0.20 },
-                  index === 5 && styles.burj,
-                ]}
-              />
-            ))}
+          <View style={styles.heroCopy}>
+            <Text style={styles.greeting}>{greeting}, Kyle</Text>
+            <Text style={styles.tagline}>DESSERTS BRING US FURTHER</Text>
           </View>
 
-          <View style={styles.greetingRow}>
-            <View>
-              <Text style={styles.greeting}>{greeting}, Kyle</Text>
-              <Text style={styles.tagline}>DESSERTS BRING US FURTHER ✦</Text>
-            </View>
-            <Text style={styles.script}>More{'\n'}than{'\n'}desserts</Text>
+          <View style={styles.heroDecor}>
+            <Text style={styles.heroScript}>More than{'
+'}desserts</Text>
+            <Text style={styles.heroStar}>✦</Text>
           </View>
         </View>
 
@@ -97,15 +85,11 @@ export default function HomeScreen() {
             pressed && styles.pressed,
           ]}
         >
-          <LinearGradient
-            colors={[colors.pineSoft, colors.pineDark]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={StyleSheet.absoluteFill}
-          />
+          <BrandPattern color={colors.mintCondition} opacity={0.08} />
+
           <View style={styles.rewardsTop}>
             <Text style={styles.rewardsEyebrow}>BOARDING CLUB</Text>
-            <Text style={styles.rewardsSmall}>A SWEETER{'\n'}TOMORROW</Text>
+            <Text style={styles.rewardsSmall}>D&D AIRLINES</Text>
           </View>
 
           <View style={styles.rewardsMain}>
@@ -115,7 +99,12 @@ export default function HomeScreen() {
                 {previewMode ? '420 points' : 'Boarding Club'}
               </Text>
               <View style={styles.progressTrack}>
-                <View style={[styles.progressFill, { width: previewMode ? '72%' : '28%' }]} />
+                <View
+                  style={[
+                    styles.progressFill,
+                    { width: previewMode ? '72%' : '24%' },
+                  ]}
+                />
               </View>
               <Text style={styles.progressText}>
                 {previewMode ? '80 points until your next reward' : 'Rewards launching soon'}
@@ -126,16 +115,14 @@ export default function HomeScreen() {
         </Pressable>
 
         <View style={styles.featureCard}>
-          <LinearGradient
-            colors={['#E9D9BD', '#F4E7D1', '#DCC5A5']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={StyleSheet.absoluteFill}
-          />
+          <BrandPattern color={colors.bark} opacity={0.025} dense />
+
           <View style={styles.featureCopy}>
             <Text style={styles.featureEyebrow}>FEATURED DESTINATION</Text>
-            <Text style={styles.featureTitle}>Dubai{'\n'}Chocolate{'\n'}Frappe</Text>
-            <Text style={styles.featureBody}>A taste of Dubai in{'\n'}every sip.</Text>
+            <Text style={styles.featureTitle}>Dubai{'
+'}Chocolate{'
+'}Frappe</Text>
+            <Text style={styles.featureBody}>Chocolate, pistachio and cream.</Text>
 
             <Pressable
               style={({ pressed }) => [
@@ -153,22 +140,21 @@ export default function HomeScreen() {
             <DrinkArtwork />
           </View>
 
-          <View style={styles.featureStamp}>
-            <Text style={styles.featureStampText}>SWEET{'\n'}PLACES{'\n'}BRING GOOD{'\n'}PEOPLE</Text>
-            <Text style={styles.featureStampStar}>✦</Text>
+          <View style={styles.passWrap}>
+            <BoardingPass
+              compact
+              code="DXB"
+              destination="DUBAI"
+              gate="A101"
+              seat="2D"
+              accent={colors.brownedSugar}
+            />
           </View>
-        </View>
-
-        <View style={styles.carouselDots}>
-          <View style={[styles.dot, styles.dotActive]} />
-          <View style={styles.dot} />
-          <View style={styles.dot} />
-          <View style={styles.dot} />
         </View>
 
         <View style={styles.sectionHeader}>
           <View style={styles.sectionTitleRow}>
-            <Text style={styles.sectionPlane}>✈</Text>
+            <Text style={styles.sectionStar}>✦</Text>
             <Text style={styles.sectionTitle}>Departures</Text>
           </View>
           <Pressable onPress={() => router.push('/order')}>
@@ -190,19 +176,55 @@ export default function HomeScreen() {
                 pressed && styles.destinationPressed,
               ]}
             >
-              <View style={[styles.destinationArt, { backgroundColor: item.accent }]}>
+              <View style={[styles.destinationTop, { backgroundColor: item.accent }]}>
+                <Text
+                  style={[
+                    styles.destinationTopLabel,
+                    {
+                      color:
+                        item.code === 'FCO' || item.code === 'DXB'
+                          ? colors.offWhite
+                          : colors.bark,
+                    },
+                  ]}
+                >
+                  {item.label.toUpperCase()}
+                </Text>
                 {index === 0 ? (
-                  <DrinkArtwork small />
+                  <View style={styles.miniDrink}>
+                    <DrinkArtwork small />
+                  </View>
                 ) : (
-                  <>
-                    <View style={styles.artCircle} />
-                    <View style={styles.artCup} />
-                    <View style={styles.artFoam} />
-                  </>
+                  <Text
+                    style={[
+                      styles.destinationGlyph,
+                      {
+                        color:
+                          item.code === 'FCO' || item.code === 'DXB'
+                            ? colors.offWhite
+                            : colors.bark,
+                      },
+                    ]}
+                  >
+                    ✦
+                  </Text>
                 )}
               </View>
-              <View style={styles.destinationBottom}>
-                <Text style={styles.destinationCode}>{item.code} ·</Text>
+
+              <View style={styles.ticketBottom}>
+                <View style={styles.miniBarcode}>
+                  {Array.from({ length: 12 }).map((_, barIndex) => (
+                    <View
+                      key={barIndex}
+                      style={[
+                        styles.miniBar,
+                        { height: 8 + ((barIndex * 5) % 10) },
+                      ]}
+                    />
+                  ))}
+                </View>
+                <Text style={styles.destinationCode}>{item.code}</Text>
+                <Text style={styles.destinationName}>{item.destination}</Text>
                 <Text style={styles.destinationLabel}>{item.label}</Text>
                 <Text style={styles.destinationArrow}>›</Text>
               </View>
@@ -212,7 +234,7 @@ export default function HomeScreen() {
 
         <View style={styles.sectionHeader}>
           <View style={styles.sectionTitleRow}>
-            <Text style={styles.sectionPlane}>↻</Text>
+            <Text style={styles.sectionStar}>↻</Text>
             <Text style={styles.sectionTitle}>Order again</Text>
           </View>
           <Text style={styles.explore}>VIEW ALL →</Text>
@@ -229,6 +251,7 @@ export default function HomeScreen() {
             <DrinkArtwork small />
           </View>
           <View style={styles.orderCopy}>
+            <Text style={styles.orderRoute}>DXB · A101</Text>
             <Text style={styles.orderTitle}>Dubai Chocolate Frappe</Text>
             <Text style={styles.orderMeta}>Grande · Extra Pistachio</Text>
           </View>
@@ -248,17 +271,18 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
-    backgroundColor: colors.cream,
+    backgroundColor: colors.offWhite,
   },
   content: {
     paddingBottom: 32,
   },
   hero: {
-    minHeight: 285,
+    minHeight: 255,
     overflow: 'hidden',
     paddingHorizontal: 22,
     paddingTop: 8,
     paddingBottom: 26,
+    backgroundColor: colors.offWhite,
   },
   topbar: {
     zIndex: 4,
@@ -269,13 +293,14 @@ const styles = StyleSheet.create({
   heroRight: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    gap: 17,
+    gap: 14,
   },
   microcopy: {
-    color: colors.ink,
+    color: colors.bark,
+    fontFamily: fonts.narrow,
     fontSize: 8,
     lineHeight: 11,
-    letterSpacing: 2.3,
+    letterSpacing: 2.1,
     fontWeight: '700',
     textAlign: 'center',
   },
@@ -284,76 +309,65 @@ const styles = StyleSheet.create({
     height: 36,
     borderRadius: 18,
     borderWidth: 1,
-    borderColor: 'rgba(47,36,29,0.20)',
+    borderColor: 'rgba(73,60,53,0.22)',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255,255,255,0.45)',
+    backgroundColor: 'rgba(255,255,255,0.28)',
   },
   bellIcon: {
-    color: colors.ink,
-    fontSize: 21,
+    color: colors.brownedSugar,
+    fontSize: 18,
   },
-  city: {
-    position: 'absolute',
-    right: 26,
-    bottom: 14,
-    height: 130,
-    width: 250,
-    flexDirection: 'row',
-    gap: 4,
-    alignItems: 'flex-end',
-  },
-  building: {
-    width: 12,
-    backgroundColor: colors.gold,
-    borderTopLeftRadius: 3,
-    borderTopRightRadius: 3,
-  },
-  burj: {
-    width: 9,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-  },
-  greetingRow: {
+  heroCopy: {
     marginTop: 54,
     zIndex: 4,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
   },
   greeting: {
-    color: colors.ink,
-    fontFamily: 'Georgia',
-    fontSize: 31,
-    lineHeight: 38,
-    letterSpacing: -0.7,
+    color: colors.bark,
+    fontFamily: fonts.body,
+    fontSize: 30,
+    lineHeight: 36,
+    fontWeight: '500',
+    letterSpacing: -1,
   },
   tagline: {
-    marginTop: 8,
-    color: colors.ink,
+    marginTop: 9,
+    color: colors.courtyard,
+    fontFamily: fonts.narrow,
     fontSize: 9,
     letterSpacing: 2.5,
     fontWeight: '700',
   },
-  script: {
-    color: colors.gold,
-    fontFamily: 'Georgia',
+  heroDecor: {
+    position: 'absolute',
+    right: 21,
+    bottom: 22,
+    alignItems: 'center',
+  },
+  heroScript: {
+    color: colors.brownedSugar,
+    fontFamily: fonts.editorial,
     fontStyle: 'italic',
     fontSize: 16,
     lineHeight: 18,
     textAlign: 'center',
-    transform: [{ rotate: '-8deg' }],
-    marginRight: 8,
+    transform: [{ rotate: '-7deg' }],
+  },
+  heroStar: {
+    color: colors.brownedSugar,
+    marginTop: 8,
+    fontSize: 15,
   },
   rewardsCard: {
     marginHorizontal: 20,
-    marginTop: -12,
-    minHeight: 148,
+    marginTop: -10,
+    minHeight: 145,
     borderRadius: radius.lg,
     padding: 20,
     overflow: 'hidden',
+    backgroundColor: colors.courtyard,
     borderWidth: 1,
-    borderColor: 'rgba(216,199,155,0.38)',
+    borderColor: '#60715C',
     ...shadow.card,
   },
   pressed: {
@@ -365,165 +379,140 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   rewardsEyebrow: {
-    color: colors.goldSoft,
-    fontSize: 10,
-    letterSpacing: 3.2,
+    color: colors.offWhite,
+    fontFamily: fonts.narrow,
+    fontSize: 9,
+    letterSpacing: 2.7,
     fontWeight: '800',
   },
   rewardsSmall: {
-    color: colors.gold,
+    color: colors.mintCondition,
+    fontFamily: fonts.narrow,
     fontSize: 8,
-    lineHeight: 11,
     letterSpacing: 2,
     fontWeight: '800',
-    textAlign: 'right',
   },
   rewardsMain: {
-    marginTop: 16,
+    marginTop: 18,
     flexDirection: 'row',
     alignItems: 'center',
   },
   plane: {
-    color: colors.cream,
-    fontSize: 29,
+    color: colors.offWhite,
+    fontSize: 28,
     marginRight: 14,
   },
   pointsBlock: {
     flex: 1,
   },
   points: {
-    color: colors.cream,
-    fontFamily: 'Georgia',
-    fontSize: 26,
+    color: colors.offWhite,
+    fontFamily: fonts.display,
+    fontSize: 25,
     marginBottom: 9,
   },
   progressTrack: {
     height: 7,
-    backgroundColor: 'rgba(245,240,230,0.16)',
+    backgroundColor: 'rgba(230,219,198,0.15)',
     borderWidth: 1,
-    borderColor: 'rgba(216,199,155,0.58)',
+    borderColor: 'rgba(209,227,210,0.5)',
     borderRadius: 10,
     overflow: 'hidden',
   },
   progressFill: {
     height: '100%',
-    backgroundColor: colors.goldSoft,
+    backgroundColor: colors.mintCondition,
     borderRadius: 10,
   },
   progressText: {
-    color: 'rgba(245,240,230,0.78)',
-    fontSize: 11,
-    marginTop: 5,
+    color: 'rgba(230,219,198,0.78)',
+    fontFamily: fonts.body,
+    fontSize: 10,
+    marginTop: 6,
   },
   cardChevron: {
-    color: colors.cream,
+    color: colors.offWhite,
     fontSize: 30,
     marginLeft: 12,
   },
   featureCard: {
-    minHeight: 305,
+    minHeight: 315,
     marginHorizontal: 20,
     marginTop: 18,
     borderRadius: radius.lg,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: '#DAC9AE',
+    borderColor: '#D4C3BE',
+    backgroundColor: colors.naturalChoice,
     ...shadow.card,
   },
   featureCopy: {
-    width: '54%',
+    width: '55%',
     padding: 21,
     zIndex: 5,
   },
   featureEyebrow: {
-    color: colors.ink,
+    color: colors.courtyard,
+    fontFamily: fonts.narrow,
     fontSize: 8,
     letterSpacing: 2,
     fontWeight: '800',
     marginBottom: 8,
   },
   featureTitle: {
-    color: colors.ink,
-    fontFamily: 'Georgia',
+    color: colors.bark,
+    fontFamily: fonts.display,
     fontSize: 34,
     lineHeight: 33,
-    letterSpacing: -0.9,
+    letterSpacing: -1,
   },
   featureBody: {
     color: colors.muted,
-    fontSize: 13,
+    fontFamily: fonts.body,
+    fontSize: 12,
     lineHeight: 17,
     marginTop: 12,
   },
   startButton: {
     marginTop: 18,
-    width: 158,
+    width: 150,
     height: 45,
     borderRadius: radius.pill,
-    backgroundColor: colors.pine,
-    paddingHorizontal: 19,
+    backgroundColor: colors.courtyard,
+    paddingHorizontal: 18,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   startButtonPressed: {
-    backgroundColor: colors.pineSoft,
+    backgroundColor: colors.pineDark,
     transform: [{ scale: 0.98 }],
   },
   startButtonText: {
-    color: colors.cream,
-    fontSize: 14,
+    color: colors.offWhite,
+    fontFamily: fonts.body,
+    fontSize: 13,
     fontWeight: '700',
   },
   startArrow: {
-    color: colors.goldSoft,
+    color: colors.mintCondition,
     fontSize: 20,
   },
   drinkWrap: {
     position: 'absolute',
-    right: 7,
-    bottom: -4,
+    right: 4,
+    bottom: 18,
   },
-  featureStamp: {
+  passWrap: {
     position: 'absolute',
-    right: 12,
-    bottom: 12,
-    padding: 7,
-    backgroundColor: 'rgba(53,43,34,0.78)',
-    borderRadius: 4,
-    zIndex: 7,
-  },
-  featureStampText: {
-    color: colors.goldSoft,
-    fontSize: 6,
-    lineHeight: 8,
-    letterSpacing: 1.4,
-    fontWeight: '800',
-  },
-  featureStampStar: {
-    color: colors.goldSoft,
-    fontSize: 9,
-    textAlign: 'center',
-    marginTop: 2,
-  },
-  carouselDots: {
-    marginTop: 10,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 7,
-  },
-  dot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: '#CBC4B8',
-  },
-  dotActive: {
-    backgroundColor: colors.pine,
+    right: -27,
+    bottom: -52,
+    transform: [{ rotate: '5deg' }, { scale: 0.58 }],
+    zIndex: 9,
   },
   sectionHeader: {
     paddingHorizontal: 20,
-    marginTop: 22,
+    marginTop: 24,
     marginBottom: 12,
     flexDirection: 'row',
     alignItems: 'flex-end',
@@ -534,94 +523,109 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
   },
-  sectionPlane: {
-    color: colors.ink,
-    fontSize: 22,
+  sectionStar: {
+    color: colors.brownedSugar,
+    fontSize: 20,
   },
   sectionTitle: {
-    color: colors.ink,
-    fontFamily: 'Georgia',
-    fontSize: 25,
+    color: colors.bark,
+    fontFamily: fonts.body,
+    fontSize: 24,
+    fontWeight: '500',
   },
   explore: {
-    color: colors.muted,
+    color: colors.courtyard,
+    fontFamily: fonts.narrow,
     fontSize: 8,
     fontWeight: '800',
-    letterSpacing: 1.8,
+    letterSpacing: 1.5,
   },
   departuresRow: {
     paddingHorizontal: 20,
     gap: 10,
   },
   destinationCard: {
-    width: 128,
-    borderRadius: 14,
-    backgroundColor: colors.paper,
+    width: 138,
+    borderRadius: 13,
+    backgroundColor: colors.white,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: colors.line,
+    borderColor: '#DED8CF',
+    ...shadow.card,
   },
   destinationPressed: {
     opacity: 0.90,
     transform: [{ translateY: 1 }],
   },
-  destinationArt: {
-    height: 92,
+  destinationTop: {
+    height: 90,
     overflow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  artCircle: {
+  destinationTopLabel: {
     position: 'absolute',
-    width: 74,
-    height: 74,
-    borderRadius: 37,
-    backgroundColor: 'rgba(255,255,255,0.18)',
+    top: 10,
+    left: 10,
+    fontFamily: fonts.narrow,
+    fontSize: 8,
+    fontWeight: '800',
+    letterSpacing: 1.4,
   },
-  artCup: {
-    width: 38,
-    height: 47,
-    marginTop: 22,
-    borderBottomLeftRadius: 9,
-    borderBottomRightRadius: 9,
-    backgroundColor: '#EFE4CC',
-    borderWidth: 1,
-    borderColor: 'rgba(47,36,29,0.18)',
+  miniDrink: {
+    marginTop: 24,
   },
-  artFoam: {
-    position: 'absolute',
-    top: 22,
-    width: 43,
-    height: 16,
-    borderRadius: 10,
-    backgroundColor: '#FFF9ED',
+  destinationGlyph: {
+    fontSize: 34,
+    marginTop: 14,
   },
-  destinationBottom: {
-    minHeight: 69,
+  ticketBottom: {
+    minHeight: 100,
     padding: 11,
   },
+  miniBarcode: {
+    height: 18,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 1.5,
+    marginBottom: 5,
+  },
+  miniBar: {
+    width: 1.5,
+    backgroundColor: '#161616',
+  },
   destinationCode: {
-    color: colors.ink,
-    fontFamily: 'Georgia',
-    fontSize: 12,
+    color: colors.bark,
+    fontFamily: fonts.narrow,
+    fontSize: 8,
+    letterSpacing: 1.2,
+  },
+  destinationName: {
+    color: '#111111',
+    fontFamily: fonts.body,
+    fontSize: 16,
+    fontWeight: '600',
+    marginTop: 2,
   },
   destinationLabel: {
-    color: colors.ink,
-    fontFamily: 'Georgia',
-    fontSize: 16,
-    marginTop: 2,
+    color: colors.muted,
+    fontFamily: fonts.narrow,
+    fontSize: 8,
+    letterSpacing: 1,
+    marginTop: 4,
+    textTransform: 'uppercase',
   },
   destinationArrow: {
     position: 'absolute',
     right: 10,
-    top: 27,
-    color: colors.muted,
+    bottom: 11,
+    color: colors.courtyard,
     fontSize: 19,
   },
   orderAgain: {
     marginHorizontal: 20,
-    minHeight: 78,
-    borderRadius: 16,
+    minHeight: 82,
+    borderRadius: 14,
     borderWidth: 1,
     borderColor: colors.line,
     backgroundColor: colors.paper,
@@ -630,30 +634,40 @@ const styles = StyleSheet.create({
     padding: 9,
   },
   orderThumb: {
-    width: 62,
-    height: 60,
-    borderRadius: 12,
+    width: 64,
+    height: 64,
+    borderRadius: 10,
     overflow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#E5D5B9',
+    backgroundColor: colors.naturalChoice,
   },
   orderCopy: {
     marginLeft: 12,
     flex: 1,
   },
+  orderRoute: {
+    color: colors.brownedSugar,
+    fontFamily: fonts.narrow,
+    fontSize: 8,
+    fontWeight: '800',
+    letterSpacing: 1.2,
+  },
   orderTitle: {
-    color: colors.ink,
+    color: colors.bark,
+    fontFamily: fonts.body,
     fontSize: 14,
     fontWeight: '700',
+    marginTop: 2,
   },
   orderMeta: {
     color: colors.muted,
-    fontSize: 11,
-    marginTop: 5,
+    fontFamily: fonts.body,
+    fontSize: 10,
+    marginTop: 4,
   },
   orderChevron: {
-    color: colors.muted,
+    color: colors.courtyard,
     fontSize: 25,
     paddingHorizontal: 8,
   },
@@ -661,7 +675,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 36,
     textAlign: 'center',
     marginTop: 24,
-    color: '#958B80',
+    color: '#8E817A',
+    fontFamily: fonts.body,
     fontSize: 9,
     lineHeight: 14,
   },
